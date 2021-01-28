@@ -1,7 +1,7 @@
 test:
     timeout: 10m
     script:
-      - cp /etc/gitlab-runner/tests/03/isolation/player/*.java src/test/java/isolation/player/.
+      - cp /etc/gitlab-runner/tests/cisc440/03/isolation/player/*.java src/test/java/isolation/player/.
       - mvn -q test > output.txt
     after_script:
       - cd /etc/gitlab-runner
