@@ -5,4 +5,4 @@ test:
       - mvn -q test > output.txt
     after_script:
       - cd /etc/gitlab-runner
-      - ./grade.script
+      - ./cisc440.grade.script
