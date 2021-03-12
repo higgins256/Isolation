@@ -39,11 +39,41 @@ public class MinimaxSearchPlayer extends IsolationPlayer {
 	}
 	
 	protected void passUpMaxMinimaxValue(IsolationMove incomingMove, List<IsolationMove> possibleMoves) {
-		//TODO: implement
+		if(possibleMoves == null || possibleMoves.isEmpty())
+		{
+			incomingMove.setMinimaxValue(Integer.MIN_VALUE);
+		}
+		else
+		{
+			IsolationMove bestMove = possibleMoves.get(0);
+			for(int i = 0; i < possibleMoves.size(); i++)
+			{
+				if(possibleMoves.get(i).getMinimaxValue() > bestMove.getMinimaxValue())
+				{
+					bestMove = possibleMoves.get(i);
+				}
+			}
+			incomingMove.setMinimaxValue(bestMove.getMinimaxValue());
+		}
 	}
 	
 	protected void passUpMinMinimaxValue(IsolationMove incomingMove, List<IsolationMove> possibleMoves) {
-		//TODO: implement
+		if(possibleMoves == null || possibleMoves.isEmpty())
+		{
+			incomingMove.setMinimaxValue(Integer.MAX_VALUE);
+		}
+		else
+		{
+			IsolationMove bestMove = possibleMoves.get(0);
+			for(int i = 0; i < possibleMoves.size(); i++)
+			{
+				if(possibleMoves.get(i).getMinimaxValue() < bestMove.getMinimaxValue())
+				{
+					bestMove = possibleMoves.get(i);
+				}
+			}
+			incomingMove.setMinimaxValue(bestMove.getMinimaxValue());
+		}
 	}
 	
 	protected void saveState() {
