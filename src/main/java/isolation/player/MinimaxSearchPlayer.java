@@ -31,11 +31,45 @@ public class MinimaxSearchPlayer extends IsolationPlayer {
 	}
 	
 	protected void findMaxMove(int currentDepth, IsolationMove incomingMove) {
-		//TODO: implement
+		IsolationMoveAction temp;
+		List<IsolationMove> minNodeMoves = getPossibleMoves(this);
+		if(currentDepth < getDepthLimit())
+		{
+			for(int i = 0; i < minNodeMoves.size(); i++)
+			{
+				temp = minNodeMoves.get(i).getMove();
+				movePlayer(this,temp);
+				findMinMove(currentDepth, minNodeMoves.get(i));
+				undoMovePlayer(this,temp);
+			}
+			passUpMaxMinimaxValue(incomingMove,minNodeMoves);
+		}
+		IsolationMove bestMove = minNodeMoves.get(0);
+		for(int i = 0; i < minNodeMoves.size(); i++)
+		{
+			if(minNodeMoves.get(i).getMinimaxValue() > bestMove.getMinimaxValue())
+			{
+				bestMove = minNodeMoves.get(i);
+			}
+		}
+		incomingMove.setMove(bestMove.getMove());
 	}
 	
 	protected void findMinMove(int currentDepth, IsolationMove incomingMove) {
-		//TODO: implement if you want
+		IsolationMoveAction temp;
+		List<IsolationMove> maxNodeMoves = getPossibleMoves(this);
+		IsolationPlayer other = savedBoard.getOtherPlayer(this);
+		if(currentDepth < getDepthLimit())
+		{
+			for(int i = 0; i < maxNodeMoves.size(); i++)
+			{
+				temp = maxNodeMoves.get(i).getMove();
+				movePlayer(other, temp);
+				findMaxMove(currentDepth + 1, maxNodeMoves.get(i));
+				undoMovePlayer(other,temp);
+			}
+			passUpMinMinimaxValue(incomingMove, maxNodeMoves);
+		}
 	}
 	
 	protected void passUpMaxMinimaxValue(IsolationMove incomingMove, List<IsolationMove> possibleMoves) {
