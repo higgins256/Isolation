@@ -149,4 +149,8 @@ public class MinimaxSearchPlayer extends IsolationPlayer {
 		player.getCell().setVisited(false);
 		board.movePlayer(player, undoMove);
 	}
+	public IsolationBoard getSavedBoard()
+	{
+		return this.savedBoard;
+	}
 }
