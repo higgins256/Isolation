@@ -31,17 +31,20 @@ public class MinimaxSearchPlayer extends IsolationPlayer {
 	}
 	
 	protected void findMaxMove(int currentDepth, IsolationMove incomingMove) {
-		IsolationMoveAction temp;
-		List<IsolationMove> minNodeMoves = getPossibleMoves(this);
+		List<IsolationMove>minNodeMoves = getPossibleMoves(this);
 		if(currentDepth < getDepthLimit())
 		{
-			for (IsolationMove minNodeMove : minNodeMoves) {
-				temp = minNodeMove.getMove();
-				movePlayer(this, temp);
-				findMinMove(currentDepth, minNodeMove);
-				undoMovePlayer(this, temp);
+			for(int i = 0; i < minNodeMoves.size(); i++)
+			{
+				movePlayer(this,minNodeMoves.get(i).getMove());
+				findMinMove(currentDepth, minNodeMoves.get(i));
+				undoMovePlayer(this, minNodeMoves.get(i).getMove());
 			}
 			passUpMaxMinimaxValue(incomingMove,minNodeMoves);
+		}
+		else
+		{
+			incomingMove.setMinimaxValue(getMinimaxValue());
 		}
 		if(minNodeMoves.size() > 0) {
 			IsolationMove bestMove = minNodeMoves.get(0);
@@ -61,12 +64,9 @@ public class MinimaxSearchPlayer extends IsolationPlayer {
 		if(currentDepth < getDepthLimit())
 		{
 			for (IsolationMove maxNodeMove : maxNodeMoves) {
-				//System.out.println("move: " + maxNodeMove.getMove());
 				temp = maxNodeMove.getMove();
-				//System.out.println("temp move: " + temp);
 				movePlayer(other, temp);
 				findMaxMove(currentDepth + 1, maxNodeMove);
-				//System.out.println("Undo move: " + temp);
 				undoMovePlayer(other, temp);
 			}
 			passUpMinMinimaxValue(incomingMove, maxNodeMoves);
