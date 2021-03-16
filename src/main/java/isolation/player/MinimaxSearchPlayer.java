@@ -35,38 +35,39 @@ public class MinimaxSearchPlayer extends IsolationPlayer {
 		List<IsolationMove> minNodeMoves = getPossibleMoves(this);
 		if(currentDepth < getDepthLimit())
 		{
-			for(int i = 0; i < minNodeMoves.size(); i++)
-			{
-				temp = minNodeMoves.get(i).getMove();
-				movePlayer(this,temp);
-				findMinMove(currentDepth, minNodeMoves.get(i));
-				undoMovePlayer(this,temp);
+			for (IsolationMove minNodeMove : minNodeMoves) {
+				temp = minNodeMove.getMove();
+				movePlayer(this, temp);
+				findMinMove(currentDepth, minNodeMove);
+				undoMovePlayer(this, temp);
 			}
 			passUpMaxMinimaxValue(incomingMove,minNodeMoves);
 		}
-		IsolationMove bestMove = minNodeMoves.get(0);
-		for(int i = 0; i < minNodeMoves.size(); i++)
-		{
-			if(minNodeMoves.get(i).getMinimaxValue() > bestMove.getMinimaxValue())
-			{
-				bestMove = minNodeMoves.get(i);
+		if(minNodeMoves.size() > 0) {
+			IsolationMove bestMove = minNodeMoves.get(0);
+			for (IsolationMove minNodeMove : minNodeMoves) {
+				if (minNodeMove.getMinimaxValue() > bestMove.getMinimaxValue()) {
+					bestMove = minNodeMove;
+				}
 			}
+			incomingMove.setMove(bestMove.getMove());
 		}
-		incomingMove.setMove(bestMove.getMove());
 	}
 	
 	protected void findMinMove(int currentDepth, IsolationMove incomingMove) {
 		IsolationMoveAction temp;
-		List<IsolationMove> maxNodeMoves = getPossibleMoves(this);
 		IsolationPlayer other = savedBoard.getOtherPlayer(this);
+		List<IsolationMove> maxNodeMoves = getPossibleMoves(other);
 		if(currentDepth < getDepthLimit())
 		{
-			for(int i = 0; i < maxNodeMoves.size(); i++)
-			{
-				temp = maxNodeMoves.get(i).getMove();
+			for (IsolationMove maxNodeMove : maxNodeMoves) {
+				//System.out.println("move: " + maxNodeMove.getMove());
+				temp = maxNodeMove.getMove();
+				//System.out.println("temp move: " + temp);
 				movePlayer(other, temp);
-				findMaxMove(currentDepth + 1, maxNodeMoves.get(i));
-				undoMovePlayer(other,temp);
+				findMaxMove(currentDepth + 1, maxNodeMove);
+				//System.out.println("Undo move: " + temp);
+				undoMovePlayer(other, temp);
 			}
 			passUpMinMinimaxValue(incomingMove, maxNodeMoves);
 		}

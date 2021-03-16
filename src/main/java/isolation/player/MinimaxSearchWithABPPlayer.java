@@ -19,7 +19,10 @@ public class MinimaxSearchWithABPPlayer extends MinimaxSearchPlayer {
 	}
 
 	private void findMaxMove(int currentDepth, IsolationMove incomingMove, int highestAchievableMinimaxValue) {
-		//TODO: implement
+		if(currentDepth < getDepthLimit())
+		{
+
+		}
 	}
 
 	protected void findMinMove(int currentDepth, IsolationMove incomingMove, int highestAchievableMinimaxValue) {
